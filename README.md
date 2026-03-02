@@ -1,2 +1,1 @@
-# distrobox
-Custom Systems and Settings
+https://distrobox.it/

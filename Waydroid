@@ -1,0 +1,31 @@
+
+sudo apt install build-essential linux-headers-$(uname -r) dkms git
+
+git clone https://github.com/choff/anbox-modules.git
+cd anbox-modules
+
+sudo cp -rT binder /usr/src/binder-1
+sudo dkms add -m binder -v 1
+sudo dkms build -m binder -v 1
+sudo dkms install -m binder -v 1
+echo -e "binder_linux" | sudo tee /etc/modules-load.d/waydroid.conf
+
+REBOOT.
+
+SE NÃO CARREGAR:
+sudo modprobe binder_linux
+
+# Criar binderfs
+sudo mkdir -p /dev/binderfs
+sudo mount -t binder binder /dev/binderfs
+
+$ lsmod | grep binder
+
+NÃO RODE ESTA BAGAÇA REMOTAMENTE!
+RODE LOCALHOST!
+
+distrobox create --root --image ghcr.io/vanilla-os/waydroid:main --init --unshare-all --name waydroid
+distrobox enter --root waydroid
+sudo waydroid init
+
+ewaydroid show-full-ui
